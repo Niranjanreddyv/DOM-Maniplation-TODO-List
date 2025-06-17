@@ -30,7 +30,7 @@ h1{
     width: 75%;
     padding: 10px;
     margin-right: 10px;
-    border: 2px soild #ddd;
+    border: 2px solid #ddd;
     border-radius: 5px;
 }
 
@@ -46,4 +46,17 @@ h1{
 ul{
     list-style: none;
     padding: 0;
+}
+
+li{
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+li:hover{
+    background-color: aliceblue;
+}
+
+li:last-child{
+    border-bottom: none;
 }
