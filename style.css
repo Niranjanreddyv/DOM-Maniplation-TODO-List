@@ -1,6 +1,8 @@
 :root{
     --body-background:#f4f4f9;
     --btn-primary:#5cabff;
+    --btn-secondary: #f8e068;
+
 }
 
 *{
@@ -59,4 +61,22 @@ li:hover{
 
 li:last-child{
     border-bottom: none;
+}
+
+.filterBtn{
+    margin: 5px;
+    padding: 10px 15px;
+    background-color: var(--btn-secondary);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.filterBtn:hover{
+    background-color: var(--btn-primary);
+}
+
+.todoIteam{
+    letter-spacing: 1px;
 }

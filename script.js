@@ -13,16 +13,34 @@ function addTodoLocalStorage(todoText){
 
 }
 
+
 function appendTodoInHtml(todoText){
 
     const todoList = document.getElementById("todoList");
 
-    const todoLi = document.createElement("li");
+    const todoIteam = document.createElement("li");
+    todoIteam.textContent = todoText;
+    todoIteam.classList.add("todoIteam");
 
-    todoLi.textContent = todoText;
+    const editBtn = document.createElement("button");
+    editBtn.textContent = "Edit";
+    editBtn.classList.add("editBtn");
 
-    todoList.appendChild(todoLi);
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "Delete";
+    deleteBtn.classList.add("deleteBtn");
 
+    const completedBtn = document.createElement("button");
+    completedBtn.textContent = "Completed";
+    completedBtn.classList.add("completedBtn");
+
+    todoIteam.appendChild(editBtn);
+    todoIteam.appendChild(deleteBtn);
+    todoIteam.appendChild(completedBtn);
+
+
+
+    todoList.appendChild(todoIteam);
 }
 
 
@@ -64,4 +82,6 @@ document.addEventListener("DOMContentLoaded", ()=>{
     })
 
 });
+
+
 
