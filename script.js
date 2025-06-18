@@ -27,7 +27,7 @@ function executeFilterAction(event){
     todoList.innerHTML='';
     const todos = loadTodos();
     if(value == "all"){
-        console.log(todoList);
+        // console.log(todoList);
         todos.todoList.forEach(todo => {
             appendTodoInHtml(todo);
         })
@@ -69,14 +69,16 @@ function appendTodoInHtml(todo){
     const editBtn = document.createElement("button");
     editBtn.textContent = "Edit";
     editBtn.classList.add("editBtn");
+    editBtn.addEventListener("click", editTodo);
 
     const deleteBtn = document.createElement("button");
     deleteBtn.textContent = "Delete";
     deleteBtn.classList.add("deleteBtn");
     deleteBtn.addEventListener("click", deleteTodo);
+    
 
     const completedBtn = document.createElement("button");
-    completedBtn.textContent = (todo.isCompleted) ? "Rest" :"Complete";
+    completedBtn.textContent = (todo.isCompleted) ? "Reset" :"Complete";
     completedBtn.classList.add("completeBtn");
     completedBtn.addEventListener("click",toggleTodo);
 
@@ -90,7 +92,7 @@ function appendTodoInHtml(todo){
     todoList.appendChild(todoIteam);
 }
 
-function restHTMLTodos(todos){
+function resetHTMLTodos(todos){
     const todoList = document.getElementById("todoList");
     todoList.innerHTML="";
     todos.todoList.forEach(todo => {
@@ -99,7 +101,7 @@ function restHTMLTodos(todos){
 }
 
 function toggleTodo(event){
-    console.log("toggled");
+   //  console.log("toggled");
     const todoIteam = event.target.parentElement.parentElement;
     const todoId = todoIteam.getAttribute("data-id");
     const todos = loadTodos();
@@ -109,24 +111,53 @@ function toggleTodo(event){
         }
     });
 
-    console.log(todos);
+    // console.log(todos);
 
     refreshTodo(todos);
     // console.log(todos);
-    restHTMLTodos(todos);
+    resetHTMLTodos(todos);
     
 
 }
 
+function editTodo(event){
+    // console.log("editing");
+    const todoIteam = event.target.parentElement.parentElement;
+    const todoId = todoIteam.getAttribute("data-id");
+    let todos = loadTodos();
+    const respone = prompt("What is the new Todo value you want to set?");
+    todos.todoList.forEach(todo => {
+        if(todo.id == todoId){
+            todo.text = respone;
+        }
+    });
+    refreshTodo(todos);
+    resetHTMLTodos(todos);
+
+}
+
 function deleteTodo(event){
-    console.log("deleteing");
+    // console.log("deleteing");
     const todoIteam = event.target.parentElement.parentElement;
     const todoId = todoIteam.getAttribute("data-id");
     let todos = loadTodos();
     todos.todoList = todos.todoList.filter(todo => todo.id != todoId);
     refreshTodo(todos);
-    restHTMLTodos(todos);
+    resetHTMLTodos(todos);
 
+}
+
+function addNewTodo(){
+    const todoText = todoInput.value;
+    if(todoText == ""){
+        alert("Please write something for the todo");
+    }else{
+        todos = loadTodos();
+        const id = todos.todoList.length;
+        addTodoLocalStorage({text:todoText, isCompleted:false, id:id});
+        appendTodoInHtml({text:todoText, isCompleted:false, id:id});
+        todoInput.value = "";
+    }
 }
 
 document.addEventListener("DOMContentLoaded", ()=>{
@@ -153,18 +184,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
    
 
-    submitButton.addEventListener('click', (event)=>{
-        const todoText = todoInput.value;
-        if(todoText == ""){
-            alert("Please write something for the todo");
-        }else{
-            todos = loadTodos();
-            const id = todos.todoList.length;
-            addTodoLocalStorage({text:todoText, isCompleted:false, id:id});
-            appendTodoInHtml({text:todoText, isCompleted:false, id:id});
-            todoInput.value = "";
-        }
-    })
+    submitButton.addEventListener('click', addNewTodo)
 
     todoInput.addEventListener("change", (event)=>{
 
@@ -180,6 +200,14 @@ document.addEventListener("DOMContentLoaded", ()=>{
     todos.todoList.forEach(todo => {
         appendTodoInHtml(todo);
     });
+
+    document.addEventListener("keypress", (event) =>{
+        // console.log(event);
+        if(event.code == "Enter"){
+            addNewTodo();
+
+        }
+    })
 
     
 
