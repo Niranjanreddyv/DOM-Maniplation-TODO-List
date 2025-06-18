@@ -2,6 +2,9 @@
     --body-background:#f4f4f9;
     --btn-primary:#5cabff;
     --btn-secondary: #f8e068;
+    --btn-edit: #ffd700;
+    --btn-complete: #32cd32;
+    --btn-delete: #ff6347;
 
 }
 
@@ -63,7 +66,7 @@ li:last-child{
     border-bottom: none;
 }
 
-.filterBtn{
+.filterBtn, .editBtn, .deleteBtn, .completeBtn{
     margin: 5px;
     padding: 10px 15px;
     background-color: var(--btn-secondary);
@@ -73,6 +76,17 @@ li:last-child{
     transition: background-color 0.3s;
 }
 
+.editBtn{
+    background-color: var(--btn-edit);
+}
+.deleteBtn{
+    background-color: var(--btn-delete);
+    
+}
+.completeBtn{
+    background-color: var(--btn-complete);
+}
+
 .filterBtn:hover{
     background-color: var(--btn-primary);
 }
@@ -80,3 +94,11 @@ li:last-child{
 .todoIteam{
     letter-spacing: 1px;
 }
+
+.todoIteam{
+    display: flex;
+    flex-direction: row;
+    margin-left: auto;
+    justify-content: space-between;
+}
+
