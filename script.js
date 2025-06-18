@@ -1,14 +1,18 @@
 function loadTodos(){
     // this function will load the todos from the browser
     const todos = JSON.parse(localStorage.getItem("todos")) || {"todoList": []};
-    console.log(todos);
+    // console.log(todos);
     return todos;
+}
+
+function refreshTodo(todos){
+    localStorage.setItem("todos", JSON.stringify(todos));
 }
 
 function addTodoLocalStorage(todo){
     const todos = loadTodos();
-    console.log("this todoList object", todo);
-    console.log("this is all todos object",todos);
+    // console.log("this todoList object", todo);
+    // console.log("this is all todos object",todos);
     todos.todoList.push({...todo});
     localStorage.setItem("todos", JSON.stringify(todos));
 
@@ -52,6 +56,10 @@ function appendTodoInHtml(todo){
 
     const textDiv = document.createElement("div");
 
+    if(todo.isCompleted){
+        textDiv.classList.add("completed")
+    }
+
     textDiv.textContent = todo.text;
     todoIteam.classList.add("todoIteam");
 
@@ -65,10 +73,12 @@ function appendTodoInHtml(todo){
     const deleteBtn = document.createElement("button");
     deleteBtn.textContent = "Delete";
     deleteBtn.classList.add("deleteBtn");
+    deleteBtn.addEventListener("click", deleteTodo);
 
     const completedBtn = document.createElement("button");
-    completedBtn.textContent = "Complete";
+    completedBtn.textContent = (todo.isCompleted) ? "Rest" :"Complete";
     completedBtn.classList.add("completeBtn");
+    completedBtn.addEventListener("click",toggleTodo);
 
     wrapper.appendChild(editBtn);
     wrapper.appendChild(deleteBtn);
@@ -80,6 +90,44 @@ function appendTodoInHtml(todo){
     todoList.appendChild(todoIteam);
 }
 
+function restHTMLTodos(todos){
+    const todoList = document.getElementById("todoList");
+    todoList.innerHTML="";
+    todos.todoList.forEach(todo => {
+        appendTodoInHtml(todo);
+    });
+}
+
+function toggleTodo(event){
+    console.log("toggled");
+    const todoIteam = event.target.parentElement.parentElement;
+    const todoId = todoIteam.getAttribute("data-id");
+    const todos = loadTodos();
+    todos.todoList.forEach(todo => {
+        if(todo.id == todoId){
+            todo.isCompleted = !todo.isCompleted;
+        }
+    });
+
+    console.log(todos);
+
+    refreshTodo(todos);
+    // console.log(todos);
+    restHTMLTodos(todos);
+    
+
+}
+
+function deleteTodo(event){
+    console.log("deleteing");
+    const todoIteam = event.target.parentElement.parentElement;
+    const todoId = todoIteam.getAttribute("data-id");
+    let todos = loadTodos();
+    todos.todoList = todos.todoList.filter(todo => todo.id != todoId);
+    refreshTodo(todos);
+    restHTMLTodos(todos);
+
+}
 
 document.addEventListener("DOMContentLoaded", ()=>{
     
@@ -89,15 +137,21 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
     let todos = loadTodos();
 
+
     const todoList = document.getElementById("todoList");
+
+
 
     const filterBtn = document.getElementsByClassName("filterBtn");
    
-    console.log(filterBtn);
+    // console.log(filterBtn);
+
     for(const btn of filterBtn){
-        console.log(btn);
+        // console.log(btn);
         btn.addEventListener("click", executeFilterAction)
     }
+
+   
 
     submitButton.addEventListener('click', (event)=>{
         const todoText = todoInput.value;
@@ -117,7 +171,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
         const todoText = event.target.value;
 
         event.target.value = todoText.trim();
-        console.log(event.target.value);
+        // console.log(event.target.value);
 
     })
 
@@ -125,7 +179,9 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
     todos.todoList.forEach(todo => {
         appendTodoInHtml(todo);
-    })
+    });
+
+    
 
 });
 

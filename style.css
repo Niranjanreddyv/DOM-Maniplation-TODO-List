@@ -102,3 +102,6 @@ li:last-child{
     justify-content: space-between;
 }
 
+.completed{
+    text-decoration: line-through;
+}
